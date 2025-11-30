@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zehra ve Feyzanın Advent Calendarı</title>
+</head>
+<style>
+    body
+    {
+    font-family: system-ui;
+    background: linear-gradient(135deg, #0b3d0b 0%, #145214 40%, #8b0000 100%);
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    color: white;
+    }
+    #snow {
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 9999;
+}
+
+.snowflake {
+    position: absolute;
+    top: -10px;
+    color: white;
+    user-select: none;
+    pointer-events: none;
+    animation-name: snowfall;
+    animation-timing-function: linear;
+    animation-iteration-count: 1;
+}
+
+@keyframes fall {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(110vh); }
+}
+    .ribbon {
+        width: 100%;
+        height: 140px;
+        background: url("kurdele.png") center/contain no-repeat;
+       
+         
+    }
+    h1{
+        text-align: center;
+    color: #ffe8a3;
+    text-shadow: 0 0 10px rgba(255, 232, 163, 0.8);
+    }
+
+    .grid{
+    display: grid;
+    grid-template-columns: repeat(6,1fr);
+    gap: 12px;
+    max-width: 900px;
+    margin: 20px auto;
+    }
+    .daybox{
+    position: relative;
+    background: #fffdf5;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    color: #333;
+    border: 2px solid #d4af37;
+    height: 200px;
+    }
+
+    .daybox:hover:not(.locked){
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.8); 
+}
+.daybox::after {
+        content: "";
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        width: 30px;
+        height: 30px;
+        background: url("ornament.png") center/contain no-repeat;
+        opacity: 0.8;
+    }
+    .locked
+    {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+    img{
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        border-radius: 8px;
+        margin-top: 10px;
+        border: 2px solid #d4af37;
+    }
+    .modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 40px;
+    cursor: pointer;
+}
+
+    
+      .confetti {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        width: 10px;
+        height: 10px;
+        background: red;
+        border-radius: 50%;
+        pointer-events: none;
+        animation: fall 2s linear forwards;
+    }
+      @keyframes fall {
+        0% { transform: translateX(0) translateY(0) rotate(0deg); opacity: 1; }
+        100% { transform: translateX(calc(-50px + 100px * random())) translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+</style>
+<body>
+    <div id="snow"></div>
+     <div class="ribbon"></div>
+     <div id="imageModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="modalImage">
+</div>
+    <h1>ZEHRA VE FEYZANIN ADVENT CALENDARI!!</h1>
+    <p style="text-align: center;">Sadece bugünün kutusu açılır aşkısı:p</p>
+    <div class="grid" id="grid"></div>
+    <script>
+       function createSnowflake() {
+    const snowContainer = document.getElementById("snow");
+    const snow = document.createElement("div");
+    snow.classList.add("snowflake");
+    snow.innerText = "❄";
+
+   
+    snow.style.left = Math.random() * 100 + "vw";
+
+   
+    snow.style.fontSize = (Math.random() * 10 + 10) + "px";
+
+   
+    const duration = Math.random() * 3 + 3; 
+    snow.style.animationDuration = duration + "s";
+
+    
+    snow.style.opacity = Math.random() * 0.7 + 0.3;
+
+    snowContainer.appendChild(snow);
+
+    
+    setTimeout(() => {
+        snow.remove();
+    }, duration * 1000);
+}
+
+
+setInterval(createSnowflake, 200);
+
+        function createConfetti() {
+    for (let i = 0; i < 30; i++) {
+        const c = document.createElement("div");
+        c.classList.add("confetti");
+        c.style.left = Math.random()*100 +"vw";
+        c.style.background = ["#ff3b3b","#ffd93b","#3bff62","#3bbdff"][Math.floor(Math.random()*4)];
+        c.style.animationDuration = (1.5 + Math.random()*1.5) + "s";
+        document.body.appendChild(c);
+        setTimeout(()=> c.remove(), 3000);
+    }
+}
+        const today = new Date();
+        const currentDay = (today.getMonth()===11) ? today.getDate():0;
+        const memes = [
+            "bir.jpg" ,
+            "iki.jpg",
+            "uc.jpg",
+            "dort.jpg",
+            "bes.jpg",
+            "alti.jpg",
+            "yedi.jpg",
+            "sekiz.jpg",
+            "dokuz.jpg",
+            "on.jpg",
+             "onbir.jpg" ,
+            "oniki.jpg",
+            "onuc.jpg",
+            "ondort.jpg",
+            "onbes.jpg",
+            "onalti.jpg",
+            "onyedi.jpg",
+            "onsekiz.jpeg",
+            "ondokuz.jpeg",
+            "yirmi.jpg",
+            "yirmibir.jpg",
+            "yirmiiki.jpg",
+            "yirmiuc.jpg",
+            "yirmidort.jpg"
+           
+        ];
+        const grid= document.getElementById("grid");
+        for(let i=1; i<=24;i++)
+    {
+        const box = document.createElement("div");
+        box.className = "daybox";
+        if(i !==currentDay)
+    {
+        box.classList.add("locked");
+    }
+    box.innerHTML = `<strong>${i}. Gün </strong>`;
+
+    box.onclick = ()=>{
+    if(i===currentDay){
+
+        box.innerHTML = `<strong>${i}. Gün </strong><br><img class="dayImg" src="${memes[i-1]}">`;
+        box.classList.remove("locked");
+        createConfetti();
+
+        openModal(memes[i-1]);
+    }
+};
+    grid.appendChild(box);
+    }
+    const modal = document.getElementById("imageModal");
+const modalImg = document.getElementById("modalImage");
+const closeBtn = document.querySelector(".close");
+
+function openModal(src) {
+    modal.style.display = "flex";
+    modalImg.src = src;
+}
+
+closeBtn.onclick = function() {
+    modal.style.display = "none";
+};
+
+modal.onclick = function(e) {
+    if (e.target === modal) modal.style.display = "none";
+};
+    </script>
+</body>
+</html>
